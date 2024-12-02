@@ -1,0 +1,7 @@
+{
+  "name": "fuse",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
