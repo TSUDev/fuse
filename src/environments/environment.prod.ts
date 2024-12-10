@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: '/api/',
+    //apiUrl: '/api/',
     // reportUrl: '/HMGReportingService/'
+    apiUrl: 'https://fuseapi.thesolutionsunit.com/api/',
 };
