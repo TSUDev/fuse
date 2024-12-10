@@ -46,7 +46,13 @@
         width: 14px;
         background: transparent !important;
         transition: none !important;
-        left: auto !important;
+
+        [dir="ltr"] & {
+            left: auto !important;
+        }
+        [dir="rtl"] & {
+            right: auto !important;
+        }
 
         &:hover,
         &:focus,

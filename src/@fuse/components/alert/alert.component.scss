@@ -28,7 +28,7 @@ fuse-alert {
 
                 &:not(:empty) {
                     display: flex;
-                    margin-right: 12px;
+                    margin-inline-end: 12px;
                 }
             }
 
@@ -91,13 +91,19 @@ fuse-alert {
         .fuse-alert-dismiss-button {
             position: absolute;
             top: 10px;
-            right: 10px;
             width: 32px !important;
             min-width: 32px !important;
             height: 32px !important;
             min-height: 32px !important;
             line-height: 32px !important;
 
+            [dir="ltr"] & {
+             right: 10px;
+            }
+            [dir="rtl"] & {
+              left: 10px;
+            }
+            
             .mat-icon {
                 @apply icon-size-4;
             }
@@ -108,7 +114,7 @@ fuse-alert {
     &.fuse-alert-dismissible {
         .fuse-alert-container {
             .fuse-alert-content {
-                margin-right: 32px;
+                margin-inline-end: 32px;
             }
         }
     }
@@ -131,10 +137,17 @@ fuse-alert {
 
             .fuse-alert-border {
                 position: absolute;
-                left: 0;
                 top: 0;
                 bottom: 0;
                 width: 4px;
+
+                [dir="ltr"] & {
+                    left: 0;
+                }
+                [dir="rtl"] & {
+                    right: 0;
+                }
+                
             }
 
             .fuse-alert-message {

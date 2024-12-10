@@ -3153,4 +3153,6 @@ export const profile: any = {
     email: 'hughes.brian@company.com',
     avatar: 'images/avatars/brian-hughes.jpg',
     about: "Hi there! I'm using FuseChat.",
+    roles: ['Admin'],
+    claims: ['CanManageUsers', 'CanViewAdminDashboard'],
 };

@@ -181,6 +181,25 @@ export class FuseVerticalNavigationComponent
         };
     }
 
+
+    //#region 
+
+    isRtl: boolean = false;
+    private observer!: MutationObserver;
+
+  
+
+  
+    private checkDirection(): void {
+      const dir = document.documentElement.getAttribute('dir');
+      this.isRtl = dir === 'rtl';
+
+
+    }
+
+    //#endregion
+
+
     /**
      * Setter for fuseScrollbarDirectives
      */
@@ -368,6 +387,17 @@ export class FuseVerticalNavigationComponent
                     this.closeAside();
                 }
             });
+
+              // Initial check for the `dir` attribute
+      this.checkDirection();
+  
+      // Create a MutationObserver to watch for changes in the `dir` attribute
+      this.observer = new MutationObserver(() => {
+        this.checkDirection(); // Update `isRtl` when `dir` changes
+      });
+  
+      // Start observing the `<html>` element for attribute changes
+      this.observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
     }
 
     /**
@@ -473,6 +503,13 @@ export class FuseVerticalNavigationComponent
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+
+
+          // Disconnect the observer when the component is destroyed
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+
     }
 
     // -----------------------------------------------------------------------------------------------------

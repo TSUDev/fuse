@@ -37,7 +37,7 @@ export class LanguagesComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
         private _translocoService: TranslocoService
-    ) {}
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -46,30 +46,96 @@ export class LanguagesComponent implements OnInit, OnDestroy {
     /**
      * On init
      */
+
+    xPosition = "before"
+
+    private updateDirection(): void {
+        const dir = document.documentElement.getAttribute('dir');
+        if (dir === 'rtl') {
+            this.xPosition = "after";
+        } else {
+            this.xPosition = "before";
+        }
+
+    }
+    // ngOnInit(): void {
+
+    //     // Get the available languages from transloco
+    //     this.availableLangs = this._translocoService.getAvailableLangs();
+
+    //     // Subscribe to language changes
+    //     this._translocoService.langChanges$.subscribe((activeLang) => {
+    //         // Get the active lang
+    //         this.activeLang = activeLang;
+
+
+    //         // Update the RTL/LTR direction
+    //         this.setRtlDirection(activeLang);
+
+    //         // Update the navigation
+    //         this._updateNavigation(activeLang);
+    //     });
+
+    //     // Set the country iso codes for languages for flags
+    //     this.flagCodes = {
+    //         en: 'us',
+    //         ar: 'jo',
+    //         // tr: 'tr',
+    //     };
+
+
+    //     this.updateDirection();
+    //     const observer = new MutationObserver(() => this.updateDirection());
+    //     observer.observe(document.documentElement, {
+    //         attributes: true,
+    //         attributeFilter: ['dir']
+    //     });
+
+    // }
+
     ngOnInit(): void {
-        // Get the available languages from transloco
+
+        this.getStoredLang();
+
+
+        // Continue with the rest of the initialization
         this.availableLangs = this._translocoService.getAvailableLangs();
+        this.flagCodes = { en: 'us', ar: 'jo' };
+        this.updateDirection();
 
         // Subscribe to language changes
         this._translocoService.langChanges$.subscribe((activeLang) => {
-            // Get the active lang
             this.activeLang = activeLang;
-
-            // Update the navigation
+            this.setRtlDirection(activeLang);
             this._updateNavigation(activeLang);
         });
 
-        // Set the country iso codes for languages for flags
-        this.flagCodes = {
-            en: 'us',
-            tr: 'tr',
-        };
+        // MutationObserver for direction updates
+        const observer = new MutationObserver(() => this.updateDirection());
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['dir']
+        });
+
+
+
+
     }
+
+    getStoredLang(): void {
+
+        // Retrieve the saved language or default to 'en'
+        const savedLang = localStorage.getItem('language') || 'en';
+
+        // Set the active language
+        this._translocoService.setActiveLang(savedLang);
+    }
+
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void {}
+    ngOnDestroy(): void { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -81,8 +147,14 @@ export class LanguagesComponent implements OnInit, OnDestroy {
      * @param lang
      */
     setActiveLang(lang: string): void {
+        console.log("set active langgggg " + lang);
         // Set the active lang
         this._translocoService.setActiveLang(lang);
+
+        // Save the language in localStorage
+        localStorage.setItem('language', lang);
+
+        this.setRtlDirection(lang);
     }
 
     /**
@@ -162,5 +234,16 @@ export class LanguagesComponent implements OnInit, OnDestroy {
                     navComponent.refresh();
                 });
         }
+    }
+
+
+
+
+    private setRtlDirection(lang: string): void {
+
+        const direction = ['ar', 'he', 'fa', 'ur'].includes(lang) ? 'rtl' : 'ltr';
+        document.documentElement.setAttribute('dir', direction);
+
+        document.documentElement.setAttribute('lang', lang);
     }
 }

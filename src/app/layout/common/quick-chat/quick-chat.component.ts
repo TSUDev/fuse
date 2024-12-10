@@ -65,7 +65,7 @@ export class QuickChatComponent implements OnInit, AfterViewInit, OnDestroy {
         private _ngZone: NgZone,
         private _quickChatService: QuickChatService,
         private _scrollStrategyOptions: ScrollStrategyOptions
-    ) {}
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Decorated methods
@@ -128,6 +128,19 @@ export class QuickChatComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((chat: Chat) => {
                 this.selectedChat = chat;
             });
+
+
+        // Initial check for the `dir` attribute
+        this.checkDirection();
+
+        // Create a MutationObserver to watch for changes in the `dir` attribute
+        this.observer = new MutationObserver(() => {
+            this.checkDirection(); // Update `isRtl` when `dir` changes
+        });
+
+        // Start observing the `<html>` element for attribute changes
+        this.observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+
     }
 
     /**
@@ -181,6 +194,13 @@ export class QuickChatComponent implements OnInit, AfterViewInit, OnDestroy {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+
+
+
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -326,4 +346,20 @@ export class QuickChatComponent implements OnInit, AfterViewInit, OnDestroy {
             this._hideOverlay();
         }
     }
+
+
+
+
+
+
+    isRtl: boolean = false;
+    private observer!: MutationObserver;
+    private checkDirection(): void {
+        const dir = document.documentElement.getAttribute('dir');
+        this.isRtl = dir === 'rtl';
+    }
+
+
+
+
 }

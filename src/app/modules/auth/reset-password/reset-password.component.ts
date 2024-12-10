@@ -53,7 +53,7 @@ export class AuthResetPasswordComponent implements OnInit {
     constructor(
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder
-    ) {}
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -66,6 +66,7 @@ export class AuthResetPasswordComponent implements OnInit {
         // Create the form
         this.resetPasswordForm = this._formBuilder.group(
             {
+                currentPassword: ['', Validators.required],
                 password: ['', Validators.required],
                 passwordConfirm: ['', Validators.required],
             },
@@ -99,7 +100,10 @@ export class AuthResetPasswordComponent implements OnInit {
 
         // Send the request to the server
         this._authService
-            .resetPassword(this.resetPasswordForm.get('password').value)
+            .resetPassword(
+                this.resetPasswordForm.get('password').value,
+                this.resetPasswordForm.get('currentPassword').value// add config later
+            )
             .pipe(
                 finalize(() => {
                     // Re-enable the form

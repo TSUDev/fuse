@@ -62,6 +62,19 @@ export class FuseHorizontalNavigationBranchItemComponent
     /**
      * On init
      */
+    
+    xPosition="before"
+  
+    private updateDirection(): void {
+      const dir = document.documentElement.getAttribute('dir');
+      if(dir !== 'rtl'){
+        this.xPosition = "after";
+      }else{
+        this.xPosition = "before";
+      }
+   
+    }
+
     ngOnInit(): void {
         // Get the parent navigation component
         this._fuseHorizontalNavigationComponent =
@@ -73,6 +86,13 @@ export class FuseHorizontalNavigationBranchItemComponent
             .subscribe(() => {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
+            });
+
+            this.updateDirection();
+            const observer = new MutationObserver(() => this.updateDirection());
+            observer.observe(document.documentElement, {
+              attributes: true,
+              attributeFilter: ['dir']
             });
     }
 

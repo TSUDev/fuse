@@ -5,4 +5,6 @@ export const user = {
     email: 'hughes.brian@company.com',
     avatar: 'images/avatars/brian-hughes.jpg',
     status: 'online',
+    roles: ['Admin'],
+    claims: ['CanManageUsers', 'CanViewAdminDashboard'],
 };

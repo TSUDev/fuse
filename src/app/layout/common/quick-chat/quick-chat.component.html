@@ -2,7 +2,7 @@
     class="fixed bottom-0 top-0 w-full sm:w-96 lg:sticky lg:left-full lg:h-screen lg:w-16 lg:shadow"
 >
     <div
-        class="bg-card flex h-full w-full flex-col transition-transform duration-400 ease-drawer sm:w-96"
+        class="bg-card flex h-full w-full flex-col transition-transform duration-400 ease-drawer sm:w-96 side-chat-box"
         [ngClass]="{
             '-translate-x-full shadow sm:-translate-x-96 lg:-translate-x-80':
                 opened,
@@ -28,7 +28,7 @@
                     <div class="text-secondary text-lg font-medium">
                         Team Chat
                     </div>
-                    <button class="ml-auto mr-4" mat-icon-button>
+                    <button class="cust-margin-mat-x-icon-button" mat-icon-button>
                         <mat-icon
                             [svgIcon]="'heroicons_outline:x-mark'"
                         ></mat-icon>
@@ -60,7 +60,7 @@
                     <div class="ml-4 truncate text-lg font-medium leading-5">
                         {{ chat.contact.name }}
                     </div>
-                    <button class="ml-auto mr-4" mat-icon-button>
+                    <button class="cust-margin-mat-x-icon-button" mat-icon-button>
                         <mat-icon
                             [svgIcon]="'heroicons_outline:x-mark'"
                         ></mat-icon>
@@ -186,13 +186,13 @@
                                         }"
                                     >
                                         <!-- Speech bubble tail -->
-                                        @if (
+                                        @if ( !isRtl && (
                                             last ||
                                             chat.messages[i + 1].isMine !==
                                                 message.isMine
-                                        ) {
+                                        )) {
                                             <div
-                                                class="absolute bottom-0 w-3"
+                                                class="absolute bottom-0 w-3 speech-bubble-tail"
                                                 [ngClass]="{
                                                     '-right-1 -mr-px mb-px text-blue-500':
                                                         message.isMine,
@@ -207,6 +207,29 @@
                                                 ></ng-container>
                                             </div>
                                         }
+
+                                        @if ( isRtl && (
+                                            last ||
+                                            chat.messages[i + 1].isMine !==
+                                                message.isMine
+                                        )) {
+                                            <div style="transform: scaleX(-1);"
+                                                class="absolute bottom-0 w-3 speech-bubble-tail"
+                                                [ngClass]="{
+                                                    '-left-1 -mr-px mb-px text-blue-500':
+                                                        message.isMine,
+                                                    '-right-1 -ml-px mb-px -scale-x-1 text-gray-500':
+                                                        !message.isMine,
+                                                }"
+                                            >
+                                                <ng-container
+                                                    *ngTemplateOutlet="
+                                                        speechBubbleExtension
+                                                    "
+                                                ></ng-container>
+                                            </div>
+                                        }
+
                                         <!-- Message -->
                                         <div
                                             class="min-w-4 leading-5"
@@ -254,7 +277,7 @@
                                 #messageInput
                             ></textarea>
                         </mat-form-field>
-                        <div class="my-px ml-4 flex h-11 items-center">
+                        <div class="my-px ml-4 flex h-11 items-center flip-x-wise">
                             <button mat-icon-button>
                                 <mat-icon
                                     [svgIcon]="

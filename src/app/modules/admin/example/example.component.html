@@ -4,6 +4,25 @@
         <!-- CONTENT GOES HERE -->
         <div
             class="h-400 max-h-400 min-h-400 rounded-2xl border-2 border-dashed border-gray-300"
-        ></div>
+        >
+    
+        <div class="flex flex-wrap">
+            <!-- Default column -->
+            <div class="flex-1">Default Column</div>
+          
+
+            <div class="flex-1"><p>{{ 'general.save' | transloco }}</p></div>
+
+            <!-- Column lg:3 -->
+            <div class="lg:w-1/4">Large: 3/12</div>
+          
+            <!-- Column sm:8 -->
+            <div class="sm:w-2/3">Small: 8/12</div> 
+            
+            <div class="flex-1">
+                <button mat-flat-button  (click)="testApi()"> test api</button></div>
+          </div>
+          
+    </div>
     </div>
 </div>

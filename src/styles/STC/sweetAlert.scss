@@ -1,0 +1,43 @@
+
+:root {
+    --sw-color-primary: #291D69;
+    --sw-color-primary-light: #39306a;
+    --sw-color-success: #008000;
+    --sw-color-warning: #FD8B23;
+    --sw-color-danger: #E11C1CE5;
+    --sw-color-secondary: #808080;
+    --sw-color-secondary-light: #D9D9D980;
+    --sw-color-text: #FFFFFF;
+    --sw-color-main-title: #606060;
+
+    /* Success color variations */
+    --sw-color-success-light: #00A000;
+    /* Lighter green */
+    --sw-color-success-dark: #006000;
+    /* Darker green */
+    --sw-color-success-bright: #00C000;
+    /* Brighter green */
+    --sw-color-success-muted: #007F00;
+    /* Muted green */
+
+    /* Warning color variations */
+    --sw-color-warning-light: #FFA347;
+    /* Lighter orange */
+    --sw-color-warning-dark: #CC6B1C;
+    /* Darker orange */
+    --sw-color-warning-bright: #FF9900;
+    /* Brighter orange */
+    --sw-color-warning-muted: #E67300;
+    /* Muted orange */
+
+    /* Danger color variations */
+    --sw-color-danger-light: #FF4C4C;
+    /* Lighter red */
+    --sw-color-danger-dark: #B80000;
+    /* Darker red */
+    --sw-color-danger-bright: #FF3333;
+    /* Brighter red */
+    --sw-color-danger-muted: #CC3333;
+    /* Muted red */
+
+}

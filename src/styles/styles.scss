@@ -2,6 +2,9 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+// @import url("./STC/rtl.scss");
+
+@import url("./STC/customStyles1.scss");
+
+@import url("./STC/sweetAlert.scss");

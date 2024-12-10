@@ -14,14 +14,12 @@ fuse-vertical-navigation {
         &.fuse-vertical-navigation-position-left {
             /* Side mode */
             &.fuse-vertical-navigation-mode-side {
-                margin-left: calc(
-                    var(--fuse-vertical-navigation-compact-width) * -1
-                );
+                margin-inline-start: calc(var(--fuse-vertical-navigation-compact-width) * -1);
             }
 
             /* Opened */
             &.fuse-vertical-navigation-opened {
-                margin-left: 0;
+                margin-inline-start: 0;
             }
         }
 
@@ -29,20 +27,24 @@ fuse-vertical-navigation {
         &.fuse-vertical-navigation-position-right {
             /* Side mode */
             &.fuse-vertical-navigation-mode-side {
-                margin-right: calc(
-                    var(--fuse-vertical-navigation-compact-width) * -1
-                );
+                margin-inline-end: calc(var(--fuse-vertical-navigation-compact-width) * -1);
             }
 
             /* Opened */
             &.fuse-vertical-navigation-opened {
-                margin-right: 0;
+                margin-inline-end: 0;
             }
 
             /* Aside wrapper */
             .fuse-vertical-navigation-aside-wrapper {
-                left: auto;
-                right: var(--fuse-vertical-navigation-compact-width);
+                [dir="ltr"] & {
+                    left: auto;
+                    right: var(--fuse-vertical-navigation-compact-width);
+                }
+                [dir="rtl"] & {
+                    left: var(--fuse-vertical-navigation-compact-width);
+                    right: auto;
+                }
             }
         }
 
@@ -62,7 +64,7 @@ fuse-vertical-navigation {
                             border-radius: 6px;
 
                             .fuse-vertical-navigation-item-icon {
-                                margin-right: 0;
+                                margin-inline-end: 0;
                             }
 
                             .fuse-vertical-navigation-item-title-wrapper {
@@ -83,7 +85,13 @@ fuse-vertical-navigation {
                             .fuse-vertical-navigation-item-badge {
                                 position: absolute;
                                 top: 12px;
-                                left: 64px;
+
+                                [dir="ltr"] & {
+                                    left: 64px;
+                                }
+                                [dir="rtl"] & {
+                                    right: 64px;
+                                }
                             }
                         }
                     }
@@ -103,7 +111,12 @@ fuse-vertical-navigation {
 
         /* Aside wrapper */
         .fuse-vertical-navigation-aside-wrapper {
-            left: var(--fuse-vertical-navigation-compact-width);
+            [dir="ltr"] & {
+                left: var(--fuse-vertical-navigation-compact-width);
+            }
+            [dir="rtl"] & {
+                right: var(--fuse-vertical-navigation-compact-width);
+            }
         }
     }
 }

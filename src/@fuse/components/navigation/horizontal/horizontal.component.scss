@@ -25,7 +25,7 @@ fuse-horizontal-navigation {
                     user-select: none;
 
                     .fuse-horizontal-navigation-item-icon {
-                        margin-right: 12px;
+                        margin-inline-end: 12px;
                     }
                 }
             }
@@ -149,7 +149,7 @@ fuse-horizontal-navigation {
             }
 
             .fuse-horizontal-navigation-item-badge {
-                margin-left: auto;
+                margin-inline-start: auto;
 
                 .fuse-horizontal-navigation-item-badge-content {
                     display: flex;

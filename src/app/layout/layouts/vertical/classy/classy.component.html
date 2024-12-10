@@ -11,13 +11,13 @@
 >
     <!-- Navigation header hook -->
     <ng-container fuseVerticalNavigationContentHeader>
-        <div class="flex w-full items-center p-4 pl-6">
+        <div class="flex w-full items-center p-4">
             <!-- Logo -->
             <div class="flex items-center justify-center">
                 <img class="w-8" src="images/logo/logo.svg" />
             </div>
             <!-- Components -->
-            <div class="ml-auto flex items-center">
+            <div class="mis-auto flex items-center">
                 <notifications></notifications>
                 <user [showAvatar]="false"></user>
             </div>
@@ -25,14 +25,14 @@
         <!-- User -->
         <div class="flex w-full flex-col items-center p-4">
             <div class="relative h-24 w-24">
-                @if (user.avatar) {
+                @if (user.Icon) {
                     <img
                         class="h-full w-full rounded-full"
-                        [src]="user.avatar"
+                        [src]="user.Icon"
                         alt="User avatar"
                     />
                 }
-                @if (!user.avatar) {
+                @if (!user.Icon) {
                     <mat-icon
                         class="icon-size-24"
                         [svgIcon]="'heroicons_solid:user-circle'"
@@ -74,7 +74,7 @@
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
         <!-- Components -->
-        <div class="ml-auto flex items-center space-x-0.5 pl-2 sm:space-x-2">
+        <div class="flex items-center space-x-0.5 sm:space-x-2 top-nav-bar-items-margin-padding">
             <languages></languages>
             <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
             <search [appearance]="'bar'"></search>

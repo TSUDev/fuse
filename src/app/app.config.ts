@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, inject } from '@angular/core';
 import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
@@ -13,19 +13,29 @@ import {
 import { provideFuse } from '@fuse';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { appRoutes } from 'app/app.routes';
-import { provideAuth } from 'app/core/auth/auth.provider';
+// import { provideAuth } from 'app/core/auth/auth.provider';
 import { provideIcons } from 'app/core/icons/icons.provider';
 import { mockApiServices } from 'app/mock-api';
 import { firstValueFrom } from 'rxjs';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 
-// FIRAS
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { provideToastr } from 'ngx-toastr';
+import { errorsInterceptor } from '../app/core/STC/interceptoers/errors.interceptor';
+import { loggerInterceptor } from '../app/core/STC/interceptoers/logger.interceptor';
+import { TokenInterceptor } from '../app/core/STC/interceptoers/token.interceptor';
+
+import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideAnimations(),
-        provideHttpClient(),
+        // provideHttpClient(),
+        provideHttpClient(withInterceptors([
+            loggerInterceptor,
+            TokenInterceptor,
+            errorsInterceptor,
+        ])),
+        provideToastr(),
         provideRouter(
             appRoutes,
             withPreloading(PreloadAllModules),
@@ -61,9 +71,13 @@ export const appConfig: ApplicationConfig = {
                         label: 'English',
                     },
                     {
-                        id: 'tr',
-                        label: 'Turkish',
+                        id: 'ar',
+                        label: 'Arabic',
                     },
+                    // {
+                    //     id: 'tr',
+                    //     label: 'Turkish',
+                    // },
                 ],
                 defaultLang: 'en',
                 fallbackLang: 'en',
@@ -78,7 +92,7 @@ export const appConfig: ApplicationConfig = {
             useFactory: () => {
                 const translocoService = inject(TranslocoService);
                 const defaultLang = translocoService.getDefaultLang();
-                translocoService.setActiveLang(defaultLang);
+                // translocoService.setActiveLang(defaultLang);
 
                 return () => firstValueFrom(translocoService.load(defaultLang));
             },
@@ -86,7 +100,7 @@ export const appConfig: ApplicationConfig = {
         },
 
         // Fuse
-        provideAuth(),
+        // provideAuth(), added my own interceports
         provideIcons(),
         provideFuse({
             mockApi: {
@@ -131,7 +145,6 @@ export const appConfig: ApplicationConfig = {
                 ],
             },
         }),
-
         //FIRAS
         provideIonicAngular(),
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

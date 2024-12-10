@@ -2,3 +2,9 @@
 @use 'styles/appearances/compact';
 @use 'styles/appearances/dense';
 @use 'styles/appearances/thin';
+
+[dir=rtl] {
+    .fuse-vertical-navigation-wrapper {
+        border-inline-end: 1px solid #2a3242 !important;
+    }
+}

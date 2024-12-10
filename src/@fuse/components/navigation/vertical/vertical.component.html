@@ -96,7 +96,7 @@
 </div>
 
 <!-- Aside -->
-@if (activeAsideItemId) {
+@if (activeAsideItemId && !isRtl) {
     <div
         class="fuse-vertical-navigation-aside-wrapper"
         fuseScrollbar
@@ -108,6 +108,36 @@
         [@fadeInRight]="position === 'right'"
         [@fadeOutLeft]="position === 'left'"
         [@fadeOutRight]="position === 'right'"
+    >
+        <!-- Items -->
+        @for (item of navigation; track trackByFn($index, item)) {
+            <!-- Skip the hidden items -->
+            @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
+                <!-- Aside -->
+                @if (item.type === 'aside' && item.id === activeAsideItemId) {
+                    <fuse-vertical-navigation-aside-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"
+                    ></fuse-vertical-navigation-aside-item>
+                }
+            }
+        }
+    </div>
+}
+
+@if (activeAsideItemId && isRtl) {
+    <div
+        class="fuse-vertical-navigation-aside-wrapper"
+        fuseScrollbar
+        [fuseScrollbarOptions]="{
+            wheelPropagation: false,
+            suppressScrollX: true,
+        }"
+        [@fadeInLeft]="position === 'right'"
+        [@fadeInRight]="position === 'left'"
+        [@fadeOutLeft]="position === 'right'"
+        [@fadeOutRight]="position === 'left'"
     >
         <!-- Items -->
         @for (item of navigation; track trackByFn($index, item)) {

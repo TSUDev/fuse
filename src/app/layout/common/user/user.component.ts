@@ -14,9 +14,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
+
+import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
     selector: 'user',
@@ -49,7 +50,7 @@ export class UserComponent implements OnInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
-        private _userService: UserService
+        private _authService: AuthService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -59,9 +60,21 @@ export class UserComponent implements OnInit, OnDestroy {
     /**
      * On init
      */
+    xPosition="before"
+  
+    private updateDirection(): void {
+      const dir = document.documentElement.getAttribute('dir');
+      if(dir === 'rtl'){
+        this.xPosition = "after";
+      }else{
+        this.xPosition = "before";
+      }
+   
+    }
+
     ngOnInit(): void {
         // Subscribe to user changes
-        this._userService.user$
+        this._authService.user$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((user: User) => {
                 this.user = user;
@@ -69,6 +82,17 @@ export class UserComponent implements OnInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+
+
+
+            
+ this.updateDirection();
+ const observer = new MutationObserver(() => this.updateDirection());
+ observer.observe(document.documentElement, {
+   attributes: true,
+   attributeFilter: ['dir']
+ });
     }
 
     /**
@@ -96,7 +120,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
 
         // Update the user
-        this._userService
+        this._authService
             .update({
                 ...this.user,
                 status,
@@ -108,6 +132,7 @@ export class UserComponent implements OnInit, OnDestroy {
      * Sign out
      */
     signOut(): void {
-        this._router.navigate(['/sign-out']);
+        this._authService.signOut();
+        this._router.navigate(['/sign-in']);
     }
 }

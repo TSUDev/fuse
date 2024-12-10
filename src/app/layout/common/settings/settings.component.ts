@@ -27,11 +27,54 @@ import { Subject, takeUntil } from 'rxjs';
                 width: auto;
             }
 
-            @media (screen and min-width: 1280px) {
-                empty-layout + settings .settings-cog {
-                    right: 0 !important;
+            @media screen and ( min-width: 1280px) {
+                [dir="ltr"] empty-layout + settings .settings-cog {
+                right: 0 !important;
+                left: auto !important;
+            }
+                [dir="rtl"] empty-layout + settings .settings-cog {
+                left: 0 !important;
+                right: auto !important;
+            }
+
+            }
+            
+            @media screen and ( max-width: 1280px) {
+            
+                [dir="ltr"] {
+                .settings-cog {
+                     border-top-left-radius: 0.5rem; // start
+                     border-bottom-left-radius: 0.5rem; // start
+                     right: 0 !important;
                 }
             }
+
+
+            [dir="rtl"] {
+                .settings-cog {
+                    border-top-right-radius: 0.5rem; // start
+                  border-bottom-right-radius: 0.5rem; // start
+                  left: 0 !important;
+                }
+            }
+            }
+
+            [dir="ltr"] {
+                .settings-cog {
+                     border-top-left-radius: 0.5rem; // start
+                     border-bottom-left-radius: 0.5rem; // start
+                }
+            }
+
+
+            [dir="rtl"] {
+                .settings-cog {
+                    border-top-right-radius: 0.5rem; // start
+                  border-bottom-right-radius: 0.5rem; // start
+                }
+            }
+
+
         `,
     ],
     encapsulation: ViewEncapsulation.None,
@@ -64,19 +107,62 @@ export class SettingsComponent implements OnInit, OnDestroy {
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
+
+    isRTL: boolean = false;
+
+    private updateDirection(): void {
+      const dir = document.documentElement.getAttribute('dir');
+      this.isRTL = dir === 'rtl';
+    }
+
     /**
      * On init
      */
+    // ngOnInit(): void {
+    //     // Subscribe to config changes
+    //     this._fuseConfigService.config$
+    //         .pipe(takeUntil(this._unsubscribeAll))
+    //         .subscribe((config: FuseConfig) => {
+    //             // Store the config
+    //             this.config = config;
+    //         });
+
+    //         this.updateDirection();
+    //         const observer = new MutationObserver(() => this.updateDirection());
+    //         observer.observe(document.documentElement, {
+    //           attributes: true,
+    //           attributeFilter: ['dir']
+    //         });
+    // }
     ngOnInit(): void {
+        // Retrieve stored configuration from localStorage
+        const storedConfig = localStorage.getItem('themeAppConfig');
+        if (storedConfig) {
+            this.config = JSON.parse(storedConfig);
+            this._fuseConfigService.config = this.config;
+        }
+    
         // Subscribe to config changes
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config: FuseConfig) => {
                 // Store the config
                 this.config = config;
+    
+                // Save the config to localStorage
+                localStorage.setItem('themeAppConfig', JSON.stringify(this.config));
             });
+    
+        // Update direction for RTL/LTR
+        this.updateDirection();
+        const observer = new MutationObserver(() => this.updateDirection());
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['dir'],
+        });
     }
 
+    
     /**
      * On destroy
      */
@@ -127,4 +213,21 @@ export class SettingsComponent implements OnInit, OnDestroy {
     setTheme(theme: Theme): void {
         this._fuseConfigService.config = { theme };
     }
+
+
+
+
+
+
+
+
+
+
+    
+    saveConfigToLocalStorage(): void {
+        localStorage.setItem('themeAppConfig', JSON.stringify(this.config));
+    }
+
+    
+
 }

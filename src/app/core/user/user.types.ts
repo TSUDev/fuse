@@ -2,6 +2,10 @@ export interface User {
     id: string;
     name: string;
     email: string;
-    avatar?: string;
+    Icon?: string;
     status?: string;
+    
+    
+    roles?: string[],
+    claims?: string[]
 }
